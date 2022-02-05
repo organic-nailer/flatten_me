@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:rainbow_color/rainbow_color.dart';
 
 class ColorSelector extends StatefulWidget {
   final List<ColorPreset> presets;
@@ -33,7 +34,7 @@ class _ColorSelectorState extends State<ColorSelector> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(widget.presets[widget.value].name,
-              style: Theme.of(context).textTheme.headline6),
+              style: Theme.of(context).textTheme.headline5),
         ),
         Expanded(
           child: LayoutBuilder(builder: (context, constraints) {
@@ -136,4 +137,12 @@ class ColorPreset {
     this.lowColor,
     this.name,
   );
+
+  Tween<Color> getTween() {
+    return RainbowColorTween([
+      highColor,
+      baseColor,
+      lowColor,
+    ]);
+  }
 }

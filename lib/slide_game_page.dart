@@ -10,7 +10,10 @@ import 'package:rainbow_color/rainbow_color.dart';
 
 class SlideGamePage extends StatefulWidget {
   final ColorPreset colorPreset;
-  const SlideGamePage({Key? key, required this.colorPreset}) : super(key: key);
+  final bool isBlindMode;
+  const SlideGamePage(
+      {Key? key, required this.colorPreset, this.isBlindMode = false})
+      : super(key: key);
 
   @override
   _SlideGamePageState createState() => _SlideGamePageState();
@@ -35,11 +38,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
   void initState() {
     super.initState();
 
-    surfaceColor = RainbowColorTween([
-      widget.colorPreset.highColor,
-      widget.colorPreset.baseColor,
-      widget.colorPreset.lowColor,
-    ]);
+    surfaceColor = widget.colorPreset.getTween();
   }
 
   void onClickTile(int row, int column) {
@@ -245,7 +244,8 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                                 child: StrokeDepthButton(
                                                   child: Center(
                                                       child: Text(
-                                                    cell.value == 0
+                                                    widget.isBlindMode ||
+                                                            cell.value == 0
                                                         ? ""
                                                         : "${cell.value}",
                                                     style: TextStyle(
@@ -269,11 +269,6 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                                         rowIndex, columnIndex);
                                                   },
                                                   surfaceColor: surfaceColor,
-                                                  surfaceOverrideColor:
-                                                      cell.value == 0
-                                                          ? widget.colorPreset
-                                                              .baseColor
-                                                          : null,
                                                 ))))
                                     .expand((e) => e)
                                     .toList(),
