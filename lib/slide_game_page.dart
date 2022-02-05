@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:expanded_grid/expanded_grid.dart';
+import 'package:flatten_me/color_selector.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -8,13 +9,8 @@ import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 import 'package:rainbow_color/rainbow_color.dart';
 
 class SlideGamePage extends StatefulWidget {
-  final Color highColor, lowColor, baseColor;
-  const SlideGamePage(
-      {Key? key,
-      required this.baseColor,
-      required this.lowColor,
-      required this.highColor})
-      : super(key: key);
+  final ColorPreset colorPreset;
+  const SlideGamePage({Key? key, required this.colorPreset}) : super(key: key);
 
   @override
   _SlideGamePageState createState() => _SlideGamePageState();
@@ -40,9 +36,9 @@ class _SlideGamePageState extends State<SlideGamePage> {
     super.initState();
 
     surfaceColor = RainbowColorTween([
-      widget.highColor,
-      widget.baseColor,
-      widget.lowColor,
+      widget.colorPreset.highColor,
+      widget.colorPreset.baseColor,
+      widget.colorPreset.lowColor,
     ]);
   }
 
@@ -161,7 +157,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.baseColor,
+      backgroundColor: widget.colorPreset.baseColor,
       body: Center(
           child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 700),
@@ -275,7 +271,8 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                                   surfaceColor: surfaceColor,
                                                   surfaceOverrideColor:
                                                       cell.value == 0
-                                                          ? widget.baseColor
+                                                          ? widget.colorPreset
+                                                              .baseColor
                                                           : null,
                                                 ))))
                                     .expand((e) => e)
@@ -289,7 +286,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                 child: Visibility(
                                   visible: isGameOver,
                                   child: ColoredBox(
-                                    color: widget.baseColor,
+                                    color: widget.colorPreset.baseColor,
                                     child: Center(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,

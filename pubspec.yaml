@@ -17,6 +17,7 @@ dependencies:
   flutter_circular_slider: 
     git:
       url: https://github.com/Faiizii/flutter-circular-slider
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

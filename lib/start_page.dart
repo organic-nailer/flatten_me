@@ -1,3 +1,4 @@
+import 'package:flatten_me/color_selector.dart';
 import 'package:flatten_me/slide_game_page.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +9,21 @@ class StartPage extends StatefulWidget {
   _StartPageState createState() => _StartPageState();
 }
 
+final colorPresets = [
+  ColorPreset(Colors.green.shade800, Colors.yellow, Colors.blue, "Greenery"),
+  ColorPreset(Colors.lightBlue.shade700, Colors.blue.shade800, Colors.brown,
+      "Dashlike"),
+  ColorPreset(Colors.orange.shade800, Colors.red, Colors.yellow, "Enthusiasm"),
+  ColorPreset(Colors.grey, Colors.grey.shade200, Colors.black, "Monotony"),
+];
+
 class _StartPageState extends State<StartPage> {
+  int selectedColorIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: colorPresets[selectedColorIndex].baseColor,
       body: Center(
         child: Column(
           children: [
@@ -35,9 +47,8 @@ class _StartPageState extends State<StartPage> {
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (_) => SlideGamePage(
-                                baseColor: Colors.green.shade700,
-                                lowColor: Colors.blue,
-                                highColor: Colors.yellow)));
+                                  colorPreset: colorPresets[selectedColorIndex],
+                                )));
                       },
                       child:
                           const Text("Start", style: TextStyle(fontSize: 20))),
@@ -50,6 +61,20 @@ class _StartPageState extends State<StartPage> {
                 ],
               ),
             ),
+            Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ColorSelector(
+                    presets: colorPresets,
+                    value: selectedColorIndex,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedColorIndex = value;
+                      });
+                    },
+                  ),
+                )),
           ],
         ),
       ),
