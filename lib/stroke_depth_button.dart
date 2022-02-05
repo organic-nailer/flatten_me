@@ -49,7 +49,7 @@ class StrokeDepthButtonState extends State<StrokeDepthButton>
     // 凹: 1.0 <-> 凸: 0.0
     _controller = AnimationController(
         vsync: this, duration: widget.duration, value: depthForController());
-    _animation = CurvedAnimation(parent: _controller, curve: widget.curve);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.linear);
   }
 
   @override

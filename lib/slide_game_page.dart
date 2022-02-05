@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:expanded_grid/expanded_grid.dart';
 import 'package:flatten_me/color_selector.dart';
+import 'package:flatten_me/start_page.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_circular_slider/flutter_circular_slider.dart';
-import 'package:rainbow_color/rainbow_color.dart';
 
 class SlideGamePage extends StatefulWidget {
   final ColorPreset colorPreset;
@@ -30,7 +30,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
   /// degree
   int angle = 45;
 
-  bool isGameOver = false;
+  // bool isGameOver = false;
 
   late Tween<Color?> surfaceColor;
 
@@ -52,7 +52,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
         steps++;
       });
 
-      isGameOver = true;
+      bool isGameOver = true;
       for (int i = 0; i < slideCells.length; i++) {
         for (int j = 0; j < slideCells[i].length; j++) {
           if (slideCells[i][j].value != (i * 4 + j + 1) % 16) {
@@ -62,8 +62,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
       }
 
       if (isGameOver) {
-        print("Game Over");
-        setState(() {});
+        onGameOver();
       }
     }
   }
@@ -102,6 +101,26 @@ class _SlideGamePageState extends State<SlideGamePage> {
                 return cells[row * 4 + col];
               }));
       steps = 0;
+      showGameOver = false;
+    });
+  }
+
+  bool lowerCells = false;
+  bool showGameOver = false;
+
+  /// ゲーム終了時のアニメーション
+  void onGameOver() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    setState(() {
+      lowerCells = true;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 700));
+
+    setState(() {
+      showGameOver = true;
+      lowerCells = false;
     });
   }
 
@@ -163,20 +182,18 @@ class _SlideGamePageState extends State<SlideGamePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Switch(
-                value: isGameOver,
-                onChanged: (v) {
-                  setState(() {
-                    isGameOver = v;
-                  });
-                }),
+            ElevatedButton(
+                onPressed: () {
+                  onGameOver();
+                },
+                child: Text("gameover")),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Steps: ',
                     style: TextStyle(fontSize: 40),
                   ),
@@ -186,7 +203,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
                         reload();
                       },
                       icon: Icon(Icons.refresh)),
-                  Spacer(
+                  const Spacer(
                     flex: 1,
                   ),
                   SingleCircularSlider(
@@ -227,70 +244,81 @@ class _SlideGamePageState extends State<SlideGamePage> {
                     child: LayoutBuilder(builder: (context, constraints) {
                       final width = constraints.biggest.width;
                       final cellSize = width / 4;
-                      return Padding(
-                        padding: EdgeInsets.all(cellSize * 0.1),
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: ExpandedGrid(
-                                row: 4,
-                                column: 4,
-                                children: slideCells
-                                    .mapIndexed((rowIndex, row) =>
-                                        row.mapIndexed((columnIndex, cell) =>
-                                            ExpandedGridContent(
-                                                columnIndex: columnIndex,
-                                                rowIndex: rowIndex,
-                                                child: StrokeDepthButton(
-                                                  child: Center(
-                                                      child: Text(
-                                                    widget.isBlindMode ||
-                                                            cell.value == 0
-                                                        ? ""
-                                                        : "${cell.value}",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize:
-                                                            cellSize * 0.3),
-                                                  )),
-                                                  value: cell.value == 0
-                                                      ? 0
-                                                      : (cell.value -
-                                                              (rowIndex * 4 +
-                                                                  columnIndex +
-                                                                  1)) /
-                                                          15.0,
-                                                  maxSurfaceOffset:
-                                                      angle2Offset(angle,
-                                                          cellSize * 0.2),
-                                                  padding: cellSize * 0.1,
-                                                  onChanged: () {
-                                                    onClickTile(
-                                                        rowIndex, columnIndex);
-                                                  },
-                                                  surfaceColor: surfaceColor,
-                                                ))))
-                                    .expand((e) => e)
-                                    .toList(),
+                      return StrokeDepthButton(
+                        surfaceColor: ColorTween(
+                            begin: widget.colorPreset.baseColor,
+                            end: widget.colorPreset.baseColor),
+                        value: lowerCells ? -0.9 : 0.0,
+                        duration: const Duration(milliseconds: 700),
+                        curve: Curves.easeInOutSine,
+                        maxSurfaceOffset: SurfaceOffset(width, width),
+                        child: Padding(
+                          padding: EdgeInsets.all(cellSize * 0.1),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: ExpandedGrid(
+                                  row: 4,
+                                  column: 4,
+                                  children: slideCells
+                                      .mapIndexed((rowIndex, row) =>
+                                          row.mapIndexed((columnIndex, cell) =>
+                                              ExpandedGridContent(
+                                                  columnIndex: columnIndex,
+                                                  rowIndex: rowIndex,
+                                                  child: StrokeDepthButton(
+                                                    child: Center(
+                                                        child: Text(
+                                                      widget.isBlindMode ||
+                                                              cell.value == 0
+                                                          ? ""
+                                                          : "${cell.value}",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                              cellSize * 0.3),
+                                                    )),
+                                                    value: cell.value == 0
+                                                        ? 0
+                                                        : (cell.value -
+                                                                (rowIndex * 4 +
+                                                                    columnIndex +
+                                                                    1)) /
+                                                            15.0,
+                                                    maxSurfaceOffset:
+                                                        angle2Offset(angle,
+                                                            cellSize * 0.2),
+                                                    padding: cellSize * 0.1,
+                                                    onChanged: () {
+                                                      onClickTile(rowIndex,
+                                                          columnIndex);
+                                                    },
+                                                    surfaceColor: surfaceColor,
+                                                  ))))
+                                      .expand((e) => e)
+                                      .toList(),
+                                ),
                               ),
-                            ),
-                            Positioned.fill(
-                              child: AnimatedOpacity(
-                                opacity: isGameOver ? 1 : 0,
-                                duration: const Duration(milliseconds: 500),
+                              Positioned.fill(
                                 child: Visibility(
-                                  visible: isGameOver,
-                                  child: ColoredBox(
+                                  visible: showGameOver,
+                                  child: Material(
                                     color: widget.colorPreset.baseColor,
                                     child: Center(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text("RESULT",
+                                          const Text("RESULT",
                                               style: TextStyle(fontSize: 30)),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text("${steps} steps",
+                                            child: Text("Step: $steps",
+                                                style: const TextStyle(
+                                                    fontSize: 50)),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text("Time: 20:00:22",
                                                 style: TextStyle(fontSize: 50)),
                                           ),
                                           Row(
@@ -300,8 +328,10 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
+                                                    onPressed: () {
+                                                      reload();
+                                                    },
+                                                    icon: const Icon(
                                                       Icons.refresh,
                                                       size: 40,
                                                     )),
@@ -311,7 +341,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                                     const EdgeInsets.all(8.0),
                                                 child: IconButton(
                                                     onPressed: () {},
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.share,
                                                       size: 40,
                                                     )),
@@ -320,8 +350,14 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder: (_) =>
+                                                                      const StartPage()));
+                                                    },
+                                                    icon: const Icon(
                                                       Icons.home,
                                                       size: 40,
                                                     )),
@@ -333,9 +369,9 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       );
                     })),
