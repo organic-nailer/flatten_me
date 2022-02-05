@@ -1,7 +1,6 @@
 import 'package:flatten_me/color_selector.dart';
 import 'package:flatten_me/slide_game_page.dart';
 import 'package:flatten_me/stroke_button.dart';
-import 'package:flatten_me/util.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
@@ -78,7 +77,7 @@ class _StartPageState extends State<StartPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 200),
+                constraints: const BoxConstraints(maxHeight: 200),
                 child: ColorSelector(
                   presets: colorPresets,
                   value: selectedColorIndex,

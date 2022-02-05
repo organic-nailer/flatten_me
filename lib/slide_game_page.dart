@@ -1,11 +1,10 @@
 import 'dart:math';
 
-import 'package:expanded_grid/expanded_grid.dart';
 import 'package:flatten_me/color_selector.dart';
-import 'package:flatten_me/start_page.dart';
+import 'package:flatten_me/slide_game_over_view.dart';
+import 'package:flatten_me/slide_game_table.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 
 class SlideGamePage extends StatefulWidget {
@@ -20,8 +19,8 @@ class SlideGamePage extends StatefulWidget {
 }
 
 class _SlideGamePageState extends State<SlideGamePage> {
-  var slideCells = List<List<CellData>>.generate(
-      4, (row) => List<CellData>.generate(4, (col) => CellData(row * 4 + col)));
+  var slideCells = List<List<int>>.generate(
+      4, (row) => List<int>.generate(4, (col) => row * 4 + col));
   int emptyCellRow = 0;
   int emptyCellColumn = 0;
 
@@ -30,23 +29,11 @@ class _SlideGamePageState extends State<SlideGamePage> {
   /// degree
   int angle = 45;
 
-  // bool isGameOver = false;
-
-  late Tween<Color?> surfaceColor;
-
-  @override
-  void initState() {
-    super.initState();
-
-    surfaceColor = widget.colorPreset.getTween();
-  }
-
   void onClickTile(int row, int column) {
     if ((row - emptyCellRow).abs() + (column - emptyCellColumn).abs() == 1) {
       setState(() {
-        slideCells[emptyCellRow][emptyCellColumn].value =
-            slideCells[row][column].value;
-        slideCells[row][column].value = 0;
+        slideCells[emptyCellRow][emptyCellColumn] = slideCells[row][column];
+        slideCells[row][column] = 0;
         emptyCellRow = row;
         emptyCellColumn = column;
         steps++;
@@ -55,7 +42,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
       bool isGameOver = true;
       for (int i = 0; i < slideCells.length; i++) {
         for (int j = 0; j < slideCells[i].length; j++) {
-          if (slideCells[i][j].value != (i * 4 + j + 1) % 16) {
+          if (slideCells[i][j] != (i * 4 + j + 1) % 16) {
             isGameOver = false;
           }
         }
@@ -69,13 +56,12 @@ class _SlideGamePageState extends State<SlideGamePage> {
 
   void reload() {
     setState(() {
-      List<CellData> cells;
+      List<int> cells;
       while (true) {
-        cells = List<CellData>.generate(16, (index) => CellData(index))
-          ..shuffle();
+        cells = List<int>.generate(16, (index) => index)..shuffle();
         // 問題が解けることを確認
-        final zeroIndex = cells.indexWhere((e) => e.value == 0);
-        final cellsCopy = cells.map((e) => e.value).toList();
+        final zeroIndex = cells.indexWhere((e) => e == 0);
+        final cellsCopy = cells.toList();
         int swapCount = 0;
         for (int i = 0; i < cellsCopy.length; i++) {
           if (cellsCopy[i] != (i + 1) % 16) {
@@ -91,10 +77,10 @@ class _SlideGamePageState extends State<SlideGamePage> {
           break;
         }
       }
-      slideCells = List<List<CellData>>.generate(
+      slideCells = List<List<int>>.generate(
           4,
-          (row) => List<CellData>.generate(4, (col) {
-                if (cells[row * 4 + col].value == 0) {
+          (row) => List<int>.generate(4, (col) {
+                if (cells[row * 4 + col] == 0) {
                   emptyCellRow = row;
                   emptyCellColumn = col;
                 }
@@ -124,54 +110,6 @@ class _SlideGamePageState extends State<SlideGamePage> {
     });
   }
 
-  SurfaceOffset angle2Offset(int angle, maxOffset) {
-    if (angle == 90) return SurfaceOffset(maxOffset, 0);
-    if (angle == 270) return SurfaceOffset(-maxOffset, 0);
-    double dx, dy;
-    switch (angle ~/ 45) {
-      case 0:
-      case 7:
-        dy = maxOffset;
-        break;
-      case 3:
-      case 4:
-        dy = -maxOffset;
-        break;
-      case 1:
-      case 2:
-        dy = maxOffset / tan(angle * pi / 180);
-        break;
-      case 5:
-      case 6:
-        dy = maxOffset / tan(-angle * pi / 180);
-        break;
-      default:
-        dy = 0;
-    }
-
-    switch (angle ~/ 45) {
-      case 1:
-      case 2:
-        dx = maxOffset;
-        break;
-      case 5:
-      case 6:
-        dx = -maxOffset;
-        break;
-      case 0:
-      case 7:
-        dx = maxOffset * tan(angle * pi / 180);
-        break;
-      case 3:
-      case 4:
-        dx = maxOffset * tan(-angle * pi / 180);
-        break;
-      default:
-        dx = 0;
-    }
-    return SurfaceOffset(dx, dy);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,7 +124,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
                 onPressed: () {
                   onGameOver();
                 },
-                child: Text("gameover")),
+                child: const Text("gameover")),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -197,12 +135,12 @@ class _SlideGamePageState extends State<SlideGamePage> {
                     'Steps: ',
                     style: TextStyle(fontSize: 40),
                   ),
-                  Text("$steps", style: TextStyle(fontSize: 40)),
+                  Text("$steps", style: const TextStyle(fontSize: 40)),
                   IconButton(
                       onPressed: () {
                         reload();
                       },
-                      icon: Icon(Icons.refresh)),
+                      icon: const Icon(Icons.refresh)),
                   const Spacer(
                     flex: 1,
                   ),
@@ -234,9 +172,6 @@ class _SlideGamePageState extends State<SlideGamePage> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
             Expanded(
               child: Center(
                 child: AspectRatio(
@@ -257,118 +192,20 @@ class _SlideGamePageState extends State<SlideGamePage> {
                           child: Stack(
                             children: [
                               Positioned.fill(
-                                child: ExpandedGrid(
-                                  row: 4,
-                                  column: 4,
-                                  children: slideCells
-                                      .mapIndexed((rowIndex, row) =>
-                                          row.mapIndexed((columnIndex, cell) =>
-                                              ExpandedGridContent(
-                                                  columnIndex: columnIndex,
-                                                  rowIndex: rowIndex,
-                                                  child: StrokeDepthButton(
-                                                    child: Center(
-                                                        child: Text(
-                                                      widget.isBlindMode ||
-                                                              cell.value == 0
-                                                          ? ""
-                                                          : "${cell.value}",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize:
-                                                              cellSize * 0.3),
-                                                    )),
-                                                    value: cell.value == 0
-                                                        ? 0
-                                                        : (cell.value -
-                                                                (rowIndex * 4 +
-                                                                    columnIndex +
-                                                                    1)) /
-                                                            15.0,
-                                                    maxSurfaceOffset:
-                                                        angle2Offset(angle,
-                                                            cellSize * 0.2),
-                                                    padding: cellSize * 0.1,
-                                                    onChanged: () {
-                                                      onClickTile(rowIndex,
-                                                          columnIndex);
-                                                    },
-                                                    surfaceColor: surfaceColor,
-                                                  ))))
-                                      .expand((e) => e)
-                                      .toList(),
-                                ),
-                              ),
+                                  child: SlideGameTable(
+                                      isBlindMode: widget.isBlindMode,
+                                      surfaceColor:
+                                          widget.colorPreset.getTween(),
+                                      angle: angle,
+                                      onClickCell: onClickTile,
+                                      slideCells: slideCells)),
                               Positioned.fill(
                                 child: Visibility(
-                                  visible: showGameOver,
-                                  child: Material(
-                                    color: widget.colorPreset.baseColor,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Text("RESULT",
-                                              style: TextStyle(fontSize: 30)),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text("Step: $steps",
-                                                style: const TextStyle(
-                                                    fontSize: 50)),
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text("Time: 20:00:22",
-                                                style: TextStyle(fontSize: 50)),
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: IconButton(
-                                                    onPressed: () {
-                                                      reload();
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.refresh,
-                                                      size: 40,
-                                                    )),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: IconButton(
-                                                    onPressed: () {},
-                                                    icon: const Icon(
-                                                      Icons.share,
-                                                      size: 40,
-                                                    )),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: IconButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                  builder: (_) =>
-                                                                      const StartPage()));
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.home,
-                                                      size: 40,
-                                                    )),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                    visible: showGameOver,
+                                    child: SlideGameOverView(
+                                        baseColor: widget.colorPreset.baseColor,
+                                        steps: steps,
+                                        reload: reload)),
                               )
                             ],
                           ),
@@ -382,9 +219,4 @@ class _SlideGamePageState extends State<SlideGamePage> {
       )),
     );
   }
-}
-
-class CellData {
-  int value;
-  CellData(this.value);
 }
