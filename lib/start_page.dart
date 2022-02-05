@@ -15,21 +15,40 @@ class _StartPageState extends State<StartPage> {
       body: Center(
         child: Column(
           children: [
-            Text("Flatten me!"),
-            Row(
-              children: [
-                TextButton(onPressed: () {}, child: Text("How to play")),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (_) => SlideGamePage(
-                              baseColor: Colors.green.shade700,
-                              lowColor: Colors.blue,
-                              highColor: Colors.yellow)));
-                    },
-                    child: Text("Start")),
-                TextButton(onPressed: () {}, child: Text("License")),
-              ],
+            Expanded(
+                flex: 3,
+                child: Center(
+                    child: Text(
+                  "Flatten me!",
+                  style: Theme.of(context).textTheme.headline1,
+                ))),
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text("How to play",
+                          style: TextStyle(fontSize: 20))),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (_) => SlideGamePage(
+                                baseColor: Colors.green.shade700,
+                                lowColor: Colors.blue,
+                                highColor: Colors.yellow)));
+                      },
+                      child:
+                          const Text("Start", style: TextStyle(fontSize: 20))),
+                  TextButton(
+                      onPressed: () {
+                        showLicensePage(context: context);
+                      },
+                      child: const Text("License",
+                          style: TextStyle(fontSize: 20))),
+                ],
+              ),
             ),
           ],
         ),
