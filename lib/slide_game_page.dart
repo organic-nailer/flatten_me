@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:expanded_grid/expanded_grid.dart';
-import 'package:flatter/stroke_depth_button.dart';
+import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_circular_slider/flutter_circular_slider.dart';

@@ -1,6 +1,6 @@
 {
-    "name": "flatter",
-    "short_name": "flatter",
+    "name": "flatten me",
+    "short_name": "flatten me",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

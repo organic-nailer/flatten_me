@@ -1,5 +1,5 @@
-import 'package:flatter/slide_game_page.dart';
-import 'package:flatter/start_page.dart';
+import 'package:flatten_me/slide_game_page.dart';
+import 'package:flatten_me/start_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
