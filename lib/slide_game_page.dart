@@ -18,7 +18,7 @@ class SlideGamePage extends StatefulWidget {
 
 class _SlideGamePageState extends State<SlideGamePage> {
   var slideCells = List<List<int>>.generate(
-      4, (row) => List<int>.generate(4, (col) => row * 4 + col));
+      4, (row) => List<int>.generate(4, (col) => (row * 4 + col + 1) % 16));
   int emptyCellRow = 0;
   int emptyCellColumn = 0;
 
@@ -27,6 +27,15 @@ class _SlideGamePageState extends State<SlideGamePage> {
 
   /// degree
   int angle = 45;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      reload();
+    });
+  }
 
   void onClickTile(int row, int column) {
     if ((row - emptyCellRow).abs() + (column - emptyCellColumn).abs() == 1) {
