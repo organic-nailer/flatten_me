@@ -5,11 +5,13 @@ class StartTitleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final isBig = MediaQuery.of(context).size.width >= 700 &&
+        MediaQuery.of(context).size.height >= 700;
     return Center(
         child: Text(
       "Flatten me!",
-      style: width >= 700
+      textAlign: TextAlign.center,
+      style: isBig
           ? Theme.of(context).textTheme.headline1
           : Theme.of(context).textTheme.headline2,
     ));

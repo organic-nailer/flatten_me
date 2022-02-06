@@ -54,6 +54,7 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isBig = MediaQuery.of(context).size.height >= 700;
     return Scaffold(
       backgroundColor: colorPresets[selectedColorIndex].baseColor,
       body: Center(
@@ -74,7 +75,7 @@ class _StartPageState extends State<StartPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 200),
+                constraints: BoxConstraints(maxHeight: isBig ? 200 : 150),
                 child: ColorSelector(
                   presets: colorPresets,
                   value: selectedColorIndex,
@@ -94,15 +95,16 @@ class _StartPageState extends State<StartPage> {
   }
 
   Widget buildButton({required String text, Widget? icon, required int index}) {
-    final width = MediaQuery.of(context).size.width;
+    final isBig = MediaQuery.of(context).size.width >= 700 &&
+        MediaQuery.of(context).size.height >= 700;
     return SizedBox(
-      width: width >= 700 ? 300 : 200,
-      height: width >= 700 ? 90 : 60,
+      width: isBig ? 300 : 200,
+      height: isBig ? 90 : 60,
       child: StrokeButton(
           value: buttonStates[index],
           onChanged: (value) => onClickButton(index),
-          offsetForProjection: width >= 700 ? 10 : 8,
-          radius: width >= 700 ? 15 : 10,
+          offsetForProjection: isBig ? 10 : 8,
+          radius: isBig ? 15 : 10,
           surfaceColor: colorPresets[selectedColorIndex].getTween(),
           child: Center(
               child: Row(
@@ -111,7 +113,7 @@ class _StartPageState extends State<StartPage> {
             children: [
               if (icon != null) icon,
               const SizedBox(width: 10),
-              Text(text, style: TextStyle(fontSize: width >= 700 ? 25 : 20))
+              Text(text, style: TextStyle(fontSize: isBig ? 25 : 20))
             ],
           ))),
     );
