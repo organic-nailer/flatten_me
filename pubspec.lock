@@ -270,6 +270,31 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  sensors_plus:
+    dependency: "direct main"
+    description:
+      path: "packages/sensors_plus/sensors_plus"
+      ref: HEAD
+      resolved-ref: "004815b197141c43a6b2848507acb6571e25d9f5"
+      url: "https://github.com/organic-nailer/plus_plugins.git"
+    source: git
+    version: "1.1.0"
+  sensors_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: sensors_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+  sensors_plus_web:
+    dependency: "direct overridden"
+    description:
+      path: "packages/sensors_plus/sensors_plus_web"
+      ref: HEAD
+      resolved-ref: "004815b197141c43a6b2848507acb6571e25d9f5"
+      url: "https://github.com/organic-nailer/plus_plugins.git"
+    source: git
+    version: "1.1.0"
   sky_engine:
     dependency: transitive
     description: flutter

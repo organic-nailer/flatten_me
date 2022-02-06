@@ -1,4 +1,5 @@
 import 'package:flatten_me/color_selector.dart';
+import 'package:flatten_me/gyroscope_observer.dart';
 import 'package:flatten_me/key_input_intent.dart';
 import 'package:flatten_me/slide_game_keyboard_detector.dart';
 import 'package:flatten_me/slide_game_menu.dart';
@@ -31,6 +32,10 @@ class _SlideGamePageState extends State<SlideGamePage> {
   /// degree
   int angle = 45;
 
+  final gyroscopeObserver = GyroscopeObserver();
+  bool isGyroscopeAvailable = false;
+  bool isGyroscopeEnabled = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -38,6 +43,17 @@ class _SlideGamePageState extends State<SlideGamePage> {
     Future.delayed(const Duration(milliseconds: 1500), () {
       reload();
     });
+
+    gyroscopeObserver.listen(() {
+      print(gyroscopeObserver.x);
+      isGyroscopeAvailable = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    gyroscopeObserver.dispose();
+    super.dispose();
   }
 
   void onClickTile(int row, int column) {
@@ -152,6 +168,13 @@ class _SlideGamePageState extends State<SlideGamePage> {
                       steps: steps,
                       reload: reload,
                       stopwatch: stopwatch,
+                      isGyroscopeAvailable: isGyroscopeAvailable,
+                      isGyroscopeEnabled: isGyroscopeEnabled,
+                      onGyroscopeChanged: (isEnabled) {
+                        setState(() {
+                          isGyroscopeEnabled = isEnabled;
+                        });
+                      },
                       onAngleChanged: (value) {
                         setState(() {
                           angle = value;

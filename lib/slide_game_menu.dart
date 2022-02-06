@@ -10,12 +10,17 @@ class SlideGameMenu extends StatefulWidget {
   final ValueChanged<int> onAngleChanged;
   final int angle;
   final Stopwatch stopwatch;
+  final bool isGyroscopeEnabled, isGyroscopeAvailable;
+  final ValueChanged<bool> onGyroscopeChanged;
   const SlideGameMenu(
       {Key? key,
       required this.steps,
       required this.reload,
       required this.onAngleChanged,
       required this.stopwatch,
+      required this.isGyroscopeAvailable,
+      required this.isGyroscopeEnabled,
+      required this.onGyroscopeChanged,
       required this.angle})
       : super(key: key);
 
@@ -49,28 +54,31 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SingleCircularSlider(
-              72,
-              (widget.angle / 5).floor(),
-              width: isBig ? 100 : 80,
-              height: isBig ? 100 : 80,
-              onSelectionChange: (a, b, c) {
-                widget.onAngleChanged(b * 5 % 360);
-              },
-              onSelectionEnd: (_, __, ___) {},
-              child: Center(
-                child: Transform.rotate(
-                  angle: widget.angle * pi / 180,
-                  child: Icon(
-                    Icons.arrow_upward_rounded,
-                    size: isBig ? 40 : 20,
-                    color: Colors.red.shade200,
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: SingleCircularSlider(
+                72,
+                (widget.angle / 5).floor(),
+                width: isBig ? 100 : 80,
+                height: isBig ? 100 : 80,
+                onSelectionChange: (a, b, c) {
+                  widget.onAngleChanged(b * 5 % 360);
+                },
+                onSelectionEnd: (_, __, ___) {},
+                child: Center(
+                  child: Transform.rotate(
+                    angle: widget.angle * pi / 180,
+                    child: Icon(
+                      Icons.arrow_upward_rounded,
+                      size: isBig ? 40 : 20,
+                      color: Colors.red.shade200,
+                    ),
                   ),
                 ),
+                selectionColor: Colors.transparent,
+                sliderStrokeWidth: 8,
+                handlerColor: Colors.red.shade200,
               ),
-              selectionColor: Colors.transparent,
-              sliderStrokeWidth: 8,
-              handlerColor: Colors.red.shade200,
             ),
             Text("Sight Angle",
                 style: TextStyle(
@@ -91,6 +99,7 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
               Padding(
                 padding: EdgeInsets.all(isBig ? 8.0 : 4.0),
                 child: IconButton(
+                  tooltip: "Reload",
                   onPressed: widget.reload,
                   icon: const Icon(Icons.refresh),
                   iconSize: isBig ? 48 : 24,
@@ -100,10 +109,35 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
               Padding(
                 padding: EdgeInsets.all(isBig ? 8.0 : 4.0),
                 child: IconButton(
+                  tooltip: "How to Play",
                   onPressed: widget.reload,
                   icon: const Icon(Icons.help_outline_rounded),
                   iconSize: isBig ? 48 : 24,
                   color: Colors.red.shade200,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(isBig ? 8.0 : 4.0),
+                child: IconButton(
+                  tooltip: "Use Gyroscope",
+                  onPressed: widget.isGyroscopeAvailable
+                      ? () {
+                          widget.onGyroscopeChanged(!widget.isGyroscopeEnabled);
+                        }
+                      : null,
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 500),
+                    child: Icon(
+                      widget.isGyroscopeEnabled
+                          ? Icons.sensors
+                          : Icons.sensors_off,
+                      key: ValueKey(widget.isGyroscopeEnabled),
+                    ),
+                  ),
+                  iconSize: isBig ? 48 : 24,
+                  color: widget.isGyroscopeAvailable
+                      ? Colors.red.shade200
+                      : Colors.black45,
                 ),
               ),
             ],

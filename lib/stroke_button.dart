@@ -136,16 +136,19 @@ class StrokeButtonState extends State<StrokeButton>
                     animation: _animation,
                     child: widget.child,
                     builder: (context, child) {
-                      return Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                            color:
-                                widget.surfaceColor.transform(_animation.value),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(widget.radius))),
-                        width: buttonWidth,
-                        height: buttonHeight,
-                        child: child,
+                      return MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                              color: widget.surfaceColor
+                                  .transform(_animation.value),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(widget.radius))),
+                          width: buttonWidth,
+                          height: buttonHeight,
+                          child: child,
+                        ),
                       );
                     }),
               ),

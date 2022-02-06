@@ -20,6 +20,16 @@ dependencies:
   carousel_slider: ^4.0.0
   url_launcher: ^6.0.18
   google_fonts: ^2.3.1
+  sensors_plus:
+    git:
+      url: https://github.com/organic-nailer/plus_plugins.git
+      path: packages/sensors_plus/sensors_plus
+
+dependency_overrides:
+  sensors_plus_web:
+    git:
+      url: https://github.com/organic-nailer/plus_plugins.git
+      path: packages/sensors_plus/sensors_plus_web
 
 dev_dependencies:
   flutter_test:
