@@ -27,16 +27,17 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("RESULT", style: TextStyle(fontSize: 30)),
+            const Text("RESULT",
+                style: TextStyle(fontSize: 30, color: Colors.white)),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Step:${widget.steps}",
-                  style: const TextStyle(fontSize: 50)),
+                  style: const TextStyle(fontSize: 50, color: Colors.white)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Time:${widget.timeSec.toStringAsFixed(1)}sec",
-                  style: const TextStyle(fontSize: 50)),
+                  style: const TextStyle(fontSize: 50, color: Colors.white)),
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -48,6 +49,7 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
                       icon: const Icon(
                         Icons.refresh,
                         size: 40,
+                        color: Colors.white,
                       )),
                 ),
                 Padding(
@@ -57,6 +59,7 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
                       icon: const Icon(
                         Icons.share,
                         size: 40,
+                        color: Colors.white,
                       )),
                 ),
                 Padding(
@@ -69,6 +72,7 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
                       icon: const Icon(
                         Icons.home,
                         size: 40,
+                        color: Colors.white,
                       )),
                 )
               ],

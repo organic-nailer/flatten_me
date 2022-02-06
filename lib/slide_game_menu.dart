@@ -74,27 +74,27 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
                     child: Icon(
                       Icons.arrow_upward_rounded,
                       size: isBig ? 40 : 20,
-                      color: Colors.red.shade200,
+                      color: Colors.white,
                     ),
                   ),
                 ),
                 selectionColor: Colors.transparent,
                 sliderStrokeWidth: 8,
-                handlerColor: Colors.red.shade200,
+                handlerColor: Colors.white,
               ),
             ),
             Text("Sight Angle",
                 style: TextStyle(
                     fontSize: isBig ? 15 : 10,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red.shade200)),
+                    color: Colors.white)),
           ],
         ),
         const SizedBox(
           width: 16,
         ),
         Text("${widget.steps}steps\n${elapsedTimeSec.toStringAsFixed(1)}sec",
-            style: TextStyle(fontSize: isBig ? 40 : 30)),
+            style: TextStyle(fontSize: isBig ? 40 : 30, color: Colors.white)),
         Expanded(
           child: Wrap(
             alignment: WrapAlignment.end,
@@ -106,7 +106,7 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
                   onPressed: widget.reload,
                   icon: const Icon(Icons.refresh),
                   iconSize: isBig ? 48 : 24,
-                  color: Colors.red.shade200,
+                  color: Colors.white,
                 ),
               ),
               Padding(
@@ -118,7 +118,7 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
                   },
                   icon: const Icon(Icons.help_outline_rounded),
                   iconSize: isBig ? 48 : 24,
-                  color: Colors.red.shade200,
+                  color: Colors.white,
                 ),
               ),
               Padding(
@@ -141,7 +141,7 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
                   ),
                   iconSize: isBig ? 48 : 24,
                   color: widget.isGyroscopeAvailable
-                      ? Colors.red.shade200
+                      ? Colors.white
                       : Colors.black45,
                 ),
               ),
