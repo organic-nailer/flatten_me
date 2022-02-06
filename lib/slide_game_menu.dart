@@ -39,39 +39,76 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isBig = width >= 600;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("${widget.steps}steps\n${elapsedTimeSec.toStringAsFixed(1)}sec",
-            style: const TextStyle(fontSize: 40)),
-        IconButton(onPressed: widget.reload, icon: const Icon(Icons.refresh)),
-        const Spacer(
-          flex: 1,
-        ),
-        SingleCircularSlider(
-          72,
-          (widget.angle / 5).floor(),
-          width: 100,
-          height: 100,
-          onSelectionChange: (a, b, c) {
-            widget.onAngleChanged(b * 5 % 360);
-          },
-          onSelectionEnd: (_, __, ___) {},
-          child: Center(
-            child: Transform.rotate(
-              angle: widget.angle * pi / 180,
-              child: Icon(
-                Icons.arrow_upward_rounded,
-                size: 40,
-                color: Colors.red.shade200,
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SingleCircularSlider(
+              72,
+              (widget.angle / 5).floor(),
+              width: isBig ? 100 : 80,
+              height: isBig ? 100 : 80,
+              onSelectionChange: (a, b, c) {
+                widget.onAngleChanged(b * 5 % 360);
+              },
+              onSelectionEnd: (_, __, ___) {},
+              child: Center(
+                child: Transform.rotate(
+                  angle: widget.angle * pi / 180,
+                  child: Icon(
+                    Icons.arrow_upward_rounded,
+                    size: isBig ? 40 : 20,
+                    color: Colors.red.shade200,
+                  ),
+                ),
               ),
+              selectionColor: Colors.transparent,
+              sliderStrokeWidth: 8,
+              handlerColor: Colors.red.shade200,
             ),
+            Text("Sight Angle",
+                style: TextStyle(
+                    fontSize: isBig ? 15 : 10,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red.shade200)),
+          ],
+        ),
+        const SizedBox(
+          width: 16,
+        ),
+        Text("${widget.steps}steps\n${elapsedTimeSec.toStringAsFixed(1)}sec",
+            style: TextStyle(fontSize: isBig ? 40 : 30)),
+        Expanded(
+          child: Wrap(
+            alignment: WrapAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(isBig ? 8.0 : 4.0),
+                child: IconButton(
+                  onPressed: widget.reload,
+                  icon: const Icon(Icons.refresh),
+                  iconSize: isBig ? 48 : 24,
+                  color: Colors.red.shade200,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(isBig ? 8.0 : 4.0),
+                child: IconButton(
+                  onPressed: widget.reload,
+                  icon: const Icon(Icons.help_outline_rounded),
+                  iconSize: isBig ? 48 : 24,
+                  color: Colors.red.shade200,
+                ),
+              ),
+            ],
           ),
-          selectionColor: Colors.transparent,
-          sliderStrokeWidth: 8,
-          handlerColor: Colors.red.shade200,
-        )
+        ),
       ],
     );
   }
