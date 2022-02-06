@@ -44,10 +44,20 @@ class _SlideGameTableState extends State<SlideGameTable> {
                     rowIndex: rowIndex,
                     child: StrokeDepthButton(
                       child: Center(
-                          child: Text(
-                        widget.isBlindMode || cell == 0 ? "" : "$cell",
-                        style: TextStyle(
-                            color: Colors.white, fontSize: cellSize * 0.3),
+                          child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        transitionBuilder: (child, animation) {
+                          return ScaleTransition(
+                            child: child,
+                            scale: animation,
+                          );
+                        },
+                        child: Text(
+                          widget.isBlindMode || cell == 0 ? "" : "$cell",
+                          key: ValueKey(cell),
+                          style: TextStyle(
+                              color: Colors.white, fontSize: cellSize * 0.3),
+                        ),
                       )),
                       value: cell == 0
                           ? 0
