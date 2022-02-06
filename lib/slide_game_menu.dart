@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flatten_me/how_to_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 
@@ -12,6 +13,7 @@ class SlideGameMenu extends StatefulWidget {
   final Stopwatch stopwatch;
   final bool isGyroscopeEnabled, isGyroscopeAvailable;
   final ValueChanged<bool> onGyroscopeChanged;
+  final Color baseColor;
   const SlideGameMenu(
       {Key? key,
       required this.steps,
@@ -21,6 +23,7 @@ class SlideGameMenu extends StatefulWidget {
       required this.isGyroscopeAvailable,
       required this.isGyroscopeEnabled,
       required this.onGyroscopeChanged,
+      required this.baseColor,
       required this.angle})
       : super(key: key);
 
@@ -110,7 +113,9 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
                 padding: EdgeInsets.all(isBig ? 8.0 : 4.0),
                 child: IconButton(
                   tooltip: "How to Play",
-                  onPressed: widget.reload,
+                  onPressed: () {
+                    showHowToPlay(context, widget.baseColor);
+                  },
                   icon: const Icon(Icons.help_outline_rounded),
                   iconSize: isBig ? 48 : 24,
                   color: Colors.red.shade200,

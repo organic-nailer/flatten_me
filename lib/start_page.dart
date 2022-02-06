@@ -1,4 +1,5 @@
 import 'package:flatten_me/color_selector.dart';
+import 'package:flatten_me/how_to_dialog.dart';
 import 'package:flatten_me/slide_game_page.dart';
 import 'package:flatten_me/start_copyright_view.dart';
 import 'package:flatten_me/start_title_view.dart';
@@ -33,7 +34,7 @@ class _StartPageState extends State<StartPage> {
       Future.delayed(const Duration(milliseconds: 1000), () {
         switch (index) {
           case 0:
-            // TODO: Implement
+            showHowToPlay(context, colorPresets[selectedColorIndex].baseColor);
             break;
           case 1:
             Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -48,6 +49,9 @@ class _StartPageState extends State<StartPage> {
                     )));
             break;
         }
+        setState(() {
+          buttonStates[index] = false;
+        });
       });
     }
   }

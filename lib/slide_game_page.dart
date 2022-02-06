@@ -165,6 +165,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
               Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: SlideGameMenu(
+                      baseColor: widget.colorPreset.baseColor,
                       steps: steps,
                       reload: reload,
                       stopwatch: stopwatch,
