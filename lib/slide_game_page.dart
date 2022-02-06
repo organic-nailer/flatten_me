@@ -107,7 +107,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
   /// ゲーム終了時のアニメーション
   void onGameOver() async {
     stopwatch.stop();
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 1500));
 
     setState(() {
       lowerCells = true;

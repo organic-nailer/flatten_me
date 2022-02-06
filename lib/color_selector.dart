@@ -40,18 +40,20 @@ class _ColorSelectorState extends State<ColorSelector> {
           child: LayoutBuilder(builder: (context, constraints) {
             return CarouselSlider.builder(
               options: CarouselOptions(
-                  aspectRatio: 3 / 4,
-                  viewportFraction: constraints.biggest.height /
-                      constraints.biggest.width *
-                      3 /
-                      4,
-                  height: 200,
-                  enableInfiniteScroll: false,
-                  onPageChanged: (index, _) {
-                    if (index != widget.value) {
-                      widget.onChanged?.call(index);
-                    }
-                  }),
+                aspectRatio: 3 / 4,
+                viewportFraction: constraints.biggest.height /
+                    constraints.biggest.width *
+                    3 /
+                    4,
+                height: 200,
+                enableInfiniteScroll: false,
+                // onPageChanged: (index, reason) {
+                //   print("$index $reason");
+                //   if (index != widget.value) {
+                //     widget.onChanged?.call(index);
+                //   }
+                // }
+              ),
               carouselController: controller,
               itemCount: widget.presets.length,
               itemBuilder: (context, index, current) {
