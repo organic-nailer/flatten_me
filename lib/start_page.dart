@@ -1,5 +1,7 @@
 import 'package:flatten_me/color_selector.dart';
 import 'package:flatten_me/slide_game_page.dart';
+import 'package:flatten_me/start_copyright_view.dart';
+import 'package:flatten_me/start_title_view.dart';
 import 'package:flatten_me/stroke_button.dart';
 import 'package:flutter/material.dart';
 
@@ -57,12 +59,7 @@ class _StartPageState extends State<StartPage> {
       body: Center(
         child: Column(
           children: [
-            Expanded(
-                child: Center(
-                    child: Text(
-              "Flatten me!",
-              style: Theme.of(context).textTheme.headline1,
-            ))),
+            const Expanded(child: StartTitleView()),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -75,7 +72,7 @@ class _StartPageState extends State<StartPage> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 200),
                 child: ColorSelector(
@@ -89,35 +86,7 @@ class _StartPageState extends State<StartPage> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                const Text("© 2022"),
-                TextButton(
-                    onPressed: () {},
-                    style: const ButtonStyle(
-                        splashFactory: NoSplash.splashFactory),
-                    child: const Text(
-                      "fastriver_org",
-                      style: TextStyle(
-                          color: Colors.black54, fontWeight: FontWeight.bold),
-                    )),
-                const Text("|"),
-                TextButton(
-                    onPressed: () {
-                      showLicensePage(context: context);
-                    },
-                    style: const ButtonStyle(
-                        splashFactory: NoSplash.splashFactory),
-                    child: const Text(
-                      "License",
-                      style: TextStyle(
-                          color: Colors.black54, fontWeight: FontWeight.bold),
-                    ))
-              ],
-            )
+            const StartCopyrightView(),
           ],
         ),
       ),
@@ -125,13 +94,15 @@ class _StartPageState extends State<StartPage> {
   }
 
   Widget buildButton({required String text, Widget? icon, required int index}) {
+    final width = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: 300,
-      height: 90,
+      width: width >= 700 ? 300 : 200,
+      height: width >= 700 ? 90 : 60,
       child: StrokeButton(
           value: buttonStates[index],
           onChanged: (value) => onClickButton(index),
-          offsetForProjection: 10,
+          offsetForProjection: width >= 700 ? 10 : 8,
+          radius: width >= 700 ? 15 : 10,
           surfaceColor: colorPresets[selectedColorIndex].getTween(),
           child: Center(
               child: Row(
@@ -140,7 +111,7 @@ class _StartPageState extends State<StartPage> {
             children: [
               if (icon != null) icon,
               const SizedBox(width: 10),
-              Text(text, style: const TextStyle(fontSize: 25))
+              Text(text, style: TextStyle(fontSize: width >= 700 ? 25 : 20))
             ],
           ))),
     );
