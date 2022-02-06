@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:expanded_grid/expanded_grid.dart';
 import 'package:collection/collection.dart';
+import 'package:flatten_me/key_input_intent.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
 

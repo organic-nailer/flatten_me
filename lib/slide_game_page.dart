@@ -1,9 +1,12 @@
 import 'package:flatten_me/color_selector.dart';
+import 'package:flatten_me/key_input_intent.dart';
+import 'package:flatten_me/slide_game_keyboard_detector.dart';
 import 'package:flatten_me/slide_game_menu.dart';
 import 'package:flatten_me/slide_game_over_view.dart';
 import 'package:flatten_me/slide_game_table.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SlideGamePage extends StatefulWidget {
   final ColorPreset colorPreset;
@@ -38,6 +41,9 @@ class _SlideGamePageState extends State<SlideGamePage> {
   }
 
   void onClickTile(int row, int column) {
+    if (row < 0 || row >= 4 || column < 0 || column >= 4) {
+      return;
+    }
     if ((row - emptyCellRow).abs() + (column - emptyCellColumn).abs() == 1) {
       setState(() {
         slideCells[emptyCellRow][emptyCellColumn] = slideCells[row][column];
@@ -123,79 +129,85 @@ class _SlideGamePageState extends State<SlideGamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: widget.colorPreset.baseColor,
-      body: Center(
-          child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 700),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  onGameOver();
-                },
-                child: const Text("gameover")),
-            Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SlideGameMenu(
-                    steps: steps,
-                    reload: reload,
-                    stopwatch: stopwatch,
-                    onAngleChanged: (value) {
-                      setState(() {
-                        angle = value;
-                      });
-                    },
-                    angle: angle)),
-            Expanded(
-              child: Center(
-                child: AspectRatio(
-                    aspectRatio: 1,
-                    child: LayoutBuilder(builder: (context, constraints) {
-                      final width = constraints.biggest.width;
-                      final cellSize = width / 4;
-                      return StrokeDepthButton(
-                        surfaceColor: ColorTween(
-                            begin: widget.colorPreset.baseColor,
-                            end: widget.colorPreset.baseColor),
-                        value: lowerCells ? -0.9 : 0.0,
-                        duration: const Duration(milliseconds: 700),
-                        curve: Curves.easeInOutSine,
-                        maxSurfaceOffset: SurfaceOffset(width, width),
-                        child: Padding(
-                          padding: EdgeInsets.all(cellSize * 0.1),
-                          child: Stack(
-                            children: [
-                              Positioned.fill(
-                                  child: SlideGameTable(
-                                      isBlindMode: widget.isBlindMode,
-                                      surfaceColor:
-                                          widget.colorPreset.getTween(),
-                                      angle: angle,
-                                      onClickCell: onClickTile,
-                                      slideCells: slideCells)),
-                              Positioned.fill(
-                                child: Visibility(
-                                    visible: showGameOver,
-                                    child: SlideGameOverView(
-                                        baseColor: widget.colorPreset.baseColor,
-                                        timeSec:
-                                            stopwatch.elapsed.inMilliseconds /
-                                                1000.0,
-                                        steps: steps,
-                                        reload: reload)),
-                              )
-                            ],
+    return SlideGameKeyboardDetector(
+      onClickTile: onClickTile,
+      emptyCellRow: emptyCellRow,
+      emptyCellColumn: emptyCellColumn,
+      child: Scaffold(
+        backgroundColor: widget.colorPreset.baseColor,
+        body: Center(
+            child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    onGameOver();
+                  },
+                  child: const Text("gameover")),
+              Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SlideGameMenu(
+                      steps: steps,
+                      reload: reload,
+                      stopwatch: stopwatch,
+                      onAngleChanged: (value) {
+                        setState(() {
+                          angle = value;
+                        });
+                      },
+                      angle: angle)),
+              Expanded(
+                child: Center(
+                  child: AspectRatio(
+                      aspectRatio: 1,
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        final width = constraints.biggest.width;
+                        final cellSize = width / 4;
+                        return StrokeDepthButton(
+                          surfaceColor: ColorTween(
+                              begin: widget.colorPreset.baseColor,
+                              end: widget.colorPreset.baseColor),
+                          value: lowerCells ? -0.9 : 0.0,
+                          duration: const Duration(milliseconds: 700),
+                          curve: Curves.easeInOutSine,
+                          maxSurfaceOffset: SurfaceOffset(width, width),
+                          child: Padding(
+                            padding: EdgeInsets.all(cellSize * 0.1),
+                            child: Stack(
+                              children: [
+                                Positioned.fill(
+                                    child: SlideGameTable(
+                                        isBlindMode: widget.isBlindMode,
+                                        surfaceColor:
+                                            widget.colorPreset.getTween(),
+                                        angle: angle,
+                                        onClickCell: onClickTile,
+                                        slideCells: slideCells)),
+                                Positioned.fill(
+                                  child: Visibility(
+                                      visible: showGameOver,
+                                      child: SlideGameOverView(
+                                          baseColor:
+                                              widget.colorPreset.baseColor,
+                                          timeSec:
+                                              stopwatch.elapsed.inMilliseconds /
+                                                  1000.0,
+                                          steps: steps,
+                                          reload: reload)),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    })),
+                        );
+                      })),
+                ),
               ),
-            ),
-          ],
-        ),
-      )),
+            ],
+          ),
+        )),
+      ),
     );
   }
 }
