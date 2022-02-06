@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flatten_me/color_selector.dart';
+import 'package:flatten_me/slide_game_menu.dart';
 import 'package:flatten_me/slide_game_over_view.dart';
 import 'package:flatten_me/slide_game_table.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 
 class SlideGamePage extends StatefulWidget {
   final ColorPreset colorPreset;
@@ -25,6 +23,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
   int emptyCellColumn = 0;
 
   int steps = 0;
+  final stopwatch = Stopwatch();
 
   /// degree
   int angle = 45;
@@ -88,6 +87,8 @@ class _SlideGamePageState extends State<SlideGamePage> {
               }));
       steps = 0;
       showGameOver = false;
+      stopwatch.reset();
+      stopwatch.start();
     });
   }
 
@@ -96,6 +97,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
 
   /// ゲーム終了時のアニメーション
   void onGameOver() async {
+    stopwatch.stop();
     await Future.delayed(const Duration(milliseconds: 500));
 
     setState(() {
@@ -126,52 +128,17 @@ class _SlideGamePageState extends State<SlideGamePage> {
                 },
                 child: const Text("gameover")),
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Steps: ',
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  Text("$steps", style: const TextStyle(fontSize: 40)),
-                  IconButton(
-                      onPressed: () {
-                        reload();
-                      },
-                      icon: const Icon(Icons.refresh)),
-                  const Spacer(
-                    flex: 1,
-                  ),
-                  SingleCircularSlider(
-                    72,
-                    (angle / 5).floor(),
-                    width: 100,
-                    height: 100,
-                    onSelectionChange: (a, b, c) {
+                padding: const EdgeInsets.all(16.0),
+                child: SlideGameMenu(
+                    steps: steps,
+                    reload: reload,
+                    stopwatch: stopwatch,
+                    onAngleChanged: (value) {
                       setState(() {
-                        angle = b * 5 % 360;
+                        angle = value;
                       });
                     },
-                    onSelectionEnd: (_, __, ___) {},
-                    child: Center(
-                      child: Transform.rotate(
-                        angle: angle * pi / 180,
-                        child: Icon(
-                          Icons.arrow_upward_rounded,
-                          size: 40,
-                          color: Colors.red.shade200,
-                        ),
-                      ),
-                    ),
-                    selectionColor: Colors.transparent,
-                    sliderStrokeWidth: 8,
-                    handlerColor: Colors.red.shade200,
-                  )
-                ],
-              ),
-            ),
+                    angle: angle)),
             Expanded(
               child: Center(
                 child: AspectRatio(
@@ -204,6 +171,9 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                     visible: showGameOver,
                                     child: SlideGameOverView(
                                         baseColor: widget.colorPreset.baseColor,
+                                        timeSec:
+                                            stopwatch.elapsed.inMilliseconds /
+                                                1000.0,
                                         steps: steps,
                                         reload: reload)),
                               )

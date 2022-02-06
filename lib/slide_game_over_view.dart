@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class SlideGameOverView extends StatefulWidget {
   final Color baseColor;
   final int steps;
+  final double timeSec;
   final VoidCallback reload;
   const SlideGameOverView(
       {Key? key,
       required this.baseColor,
       required this.steps,
+      required this.timeSec,
       required this.reload})
       : super(key: key);
 
@@ -28,12 +30,13 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
             const Text("RESULT", style: TextStyle(fontSize: 30)),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Step: ${widget.steps}",
+              child: Text("Step:${widget.steps}",
                   style: const TextStyle(fontSize: 50)),
             ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text("Time: 20:00:22", style: TextStyle(fontSize: 50)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Time:${widget.timeSec.toStringAsFixed(1)}sec",
+                  style: const TextStyle(fontSize: 50)),
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
