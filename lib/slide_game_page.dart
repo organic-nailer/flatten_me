@@ -31,6 +31,8 @@ class _SlideGamePageState extends State<SlideGamePage> {
 
   /// degree
   int angle = 45;
+  double gyroDx = 0;
+  double gyroDy = 0;
 
   final gyroscopeObserver = GyroscopeObserver();
   bool isGyroscopeAvailable = false;
@@ -45,8 +47,13 @@ class _SlideGamePageState extends State<SlideGamePage> {
     });
 
     gyroscopeObserver.listen(() {
-      print(gyroscopeObserver.x);
       isGyroscopeAvailable = true;
+      if (isGyroscopeEnabled) {
+        setState(() {
+          gyroDy = (gyroscopeObserver.x * 3).clamp(-1, 1);
+          gyroDx = -(gyroscopeObserver.y * 3).clamp(-1, 1).toDouble();
+        });
+      }
     });
   }
 
@@ -207,6 +214,9 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                         surfaceColor:
                                             widget.colorPreset.getTween(),
                                         angle: angle,
+                                        gyroDx: gyroDx,
+                                        gyroDy: gyroDy,
+                                        isGyroEnabled: isGyroscopeEnabled,
                                         onClickCell: onClickTile,
                                         slideCells: slideCells)),
                                 Positioned.fill(

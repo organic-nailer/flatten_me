@@ -10,6 +10,8 @@ class SlideGameTable extends StatefulWidget {
   final bool isBlindMode;
   final Tween<Color?> surfaceColor;
   final int angle;
+  final double gyroDx, gyroDy;
+  final bool isGyroEnabled;
   final Function(int, int) onClickCell;
   final List<List<int>> slideCells;
   const SlideGameTable(
@@ -17,6 +19,9 @@ class SlideGameTable extends StatefulWidget {
       required this.isBlindMode,
       required this.surfaceColor,
       required this.angle,
+      required this.gyroDx,
+      required this.gyroDy,
+      required this.isGyroEnabled,
       required this.onClickCell,
       required this.slideCells})
       : super(key: key);
@@ -63,8 +68,10 @@ class _SlideGameTableState extends State<SlideGameTable> {
                       value: cell == 0
                           ? 0
                           : (cell - (rowIndex * 4 + columnIndex + 1)) / 15.0,
-                      maxSurfaceOffset:
-                          _angle2Offset(widget.angle, cellSize * 0.2),
+                      maxSurfaceOffset: widget.isGyroEnabled
+                          ? SurfaceOffset(widget.gyroDx * cellSize * 0.2,
+                              widget.gyroDy * cellSize * 0.2)
+                          : _angle2Offset(widget.angle, cellSize * 0.2),
                       padding: cellSize * 0.1,
                       onChanged: () {
                         widget.onClickCell(rowIndex, columnIndex);
