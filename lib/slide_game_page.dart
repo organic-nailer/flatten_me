@@ -1,13 +1,11 @@
 import 'package:flatten_me/color_selector.dart';
 import 'package:flatten_me/gyroscope_observer.dart';
-import 'package:flatten_me/key_input_intent.dart';
 import 'package:flatten_me/slide_game_keyboard_detector.dart';
 import 'package:flatten_me/slide_game_menu.dart';
 import 'package:flatten_me/slide_game_over_view.dart';
 import 'package:flatten_me/slide_game_table.dart';
 import 'package:flatten_me/stroke_depth_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SlideGamePage extends StatefulWidget {
   final ColorPreset colorPreset;
@@ -229,6 +227,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
                                               stopwatch.elapsed.inMilliseconds /
                                                   1000.0,
                                           steps: steps,
+                                          isBlind: widget.isBlindMode,
                                           reload: reload)),
                                 )
                               ],

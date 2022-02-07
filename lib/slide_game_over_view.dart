@@ -6,12 +6,14 @@ class SlideGameOverView extends StatefulWidget {
   final int steps;
   final double timeSec;
   final VoidCallback reload;
+  final bool isBlind;
   const SlideGameOverView(
       {Key? key,
       required this.baseColor,
       required this.steps,
       required this.timeSec,
-      required this.reload})
+      required this.reload,
+      required this.isBlind})
       : super(key: key);
 
   @override
@@ -27,8 +29,8 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("RESULT",
-                style: TextStyle(fontSize: 30, color: Colors.white)),
+            Text("RESULT" + (widget.isBlind ? "(Blind)" : ""),
+                style: const TextStyle(fontSize: 30, color: Colors.white)),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("Step:${widget.steps}",
