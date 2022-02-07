@@ -10,19 +10,18 @@ env:
   flutter_version: '2.10.0'
 jobs:
   build_and_deploy:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        include:
-          - os: ubuntu-latest
-            flutter_path: /opt/hostedtoolcache/flutter
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v1
+      - name: search flutter cache
+      - uses: actions/cache@v2
         with:
-          path: ${{ matrix.flutter_path }}
+          path: /opt/hostedtoolcache/flutter
           key: ${{ runner.os }}-flutter-install-cache-${{ env.flutter_version }}
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: stable
       - name: Install
         run: flutter pub get
       - name: Build
