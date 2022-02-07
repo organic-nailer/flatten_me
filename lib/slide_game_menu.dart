@@ -34,16 +34,29 @@ class SlideGameMenu extends StatefulWidget {
 
 class _SlideGameMenuState extends State<SlideGameMenu> {
   double elapsedTimeSec = 0;
+  Timer? timer;
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(milliseconds: 100), (_) {
+    timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
       if (widget.stopwatch.isRunning) {
-        setState(() {
+        safeSetState(() {
           elapsedTimeSec = widget.stopwatch.elapsedMilliseconds / 1000;
         });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void safeSetState(VoidCallback callback) {
+    if (mounted) {
+      setState(callback);
+    }
   }
 
   @override
@@ -61,8 +74,7 @@ class _SlideGameMenuState extends State<SlideGameMenu> {
               child: IconButton(
                 tooltip: "Back to Home",
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => const StartPage()));
+                  Navigator.of(context).pop();
                 },
                 icon: const Icon(Icons.close),
                 iconSize: isBig ? 32 : 24,

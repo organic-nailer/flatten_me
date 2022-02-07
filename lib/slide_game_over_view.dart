@@ -72,8 +72,7 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
                   padding: const EdgeInsets.all(8.0),
                   child: IconButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (_) => const StartPage()));
+                        Navigator.of(context).pop();
                       },
                       icon: const Icon(
                         Icons.home,

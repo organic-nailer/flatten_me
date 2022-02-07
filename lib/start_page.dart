@@ -4,6 +4,7 @@ import 'package:flatten_me/slide_game_page.dart';
 import 'package:flatten_me/start_copyright_view.dart';
 import 'package:flatten_me/start_title_view.dart';
 import 'package:flatten_me/stroke_button.dart';
+import 'package:flatten_me/stroke_page_transition.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
@@ -37,9 +38,8 @@ class _StartPageState extends State<StartPage> {
             showHowToPlay(context, colorPresets[selectedColorIndex].baseColor);
             break;
           case 1:
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (_) => SlideGamePage(
-                    colorPreset: colorPresets[selectedColorIndex])));
+            navigateWithStrokeTransition(context,
+                SlideGamePage(colorPreset: colorPresets[selectedColorIndex]));
             break;
           case 2:
             Navigator.of(context).pushReplacement(MaterialPageRoute(

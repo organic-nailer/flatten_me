@@ -14,8 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flatten me!',
       theme: ThemeData(
-          primarySwatch: Colors.green,
-          textTheme: GoogleFonts.shareTechMonoTextTheme()),
+        primarySwatch: Colors.green,
+        textTheme: GoogleFonts.shareTechMonoTextTheme(),
+      ),
       home: const StartPage(),
     );
   }

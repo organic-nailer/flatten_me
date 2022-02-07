@@ -64,6 +64,12 @@ class _SlideGamePageState extends State<SlideGamePage> {
     super.dispose();
   }
 
+  void safeSetState(VoidCallback callback) {
+    if (mounted) {
+      setState(callback);
+    }
+  }
+
   void onClickTile(int row, int column) {
     if (row < 0 || row >= 4 || column < 0 || column >= 4) {
       return;
@@ -93,7 +99,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
   }
 
   void reload() {
-    setState(() {
+    safeSetState(() {
       List<int> cells;
       while (true) {
         cells = List<int>.generate(16, (index) => index)..shuffle();
@@ -139,13 +145,13 @@ class _SlideGamePageState extends State<SlideGamePage> {
     stopwatch.stop();
     await Future.delayed(const Duration(milliseconds: 1500));
 
-    setState(() {
+    safeSetState(() {
       lowerCells = true;
     });
 
     await Future.delayed(const Duration(milliseconds: 700));
 
-    setState(() {
+    safeSetState(() {
       showGameOver = true;
       lowerCells = false;
     });
