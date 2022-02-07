@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flatten_me/color_selector.dart';
 import 'package:flatten_me/gyroscope_observer.dart';
 import 'package:flatten_me/slide_game_keyboard_detector.dart';
@@ -50,6 +52,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
         setState(() {
           gyroDy = (gyroscopeObserver.x * 3).clamp(-1, 1);
           gyroDx = -(gyroscopeObserver.y * 3).clamp(-1, 1).toDouble();
+          angle = (SurfaceOffset(gyroDy, gyroDx).nTheta() * 180 / pi).round();
         });
       }
     });
@@ -180,6 +183,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
                         onGyroscopeChanged: (isEnabled) {
                           setState(() {
                             isGyroscopeEnabled = isEnabled;
+                            gyroscopeObserver.resetPosition();
                           });
                         },
                         onAngleChanged: (value) {

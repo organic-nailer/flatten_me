@@ -11,7 +11,7 @@ class GyroscopeObserver {
   Stopwatch stopwatch = Stopwatch();
   double _lastTime = 0.0;
 
-  bool listen(Function onChange) {
+  void listen(Function onChange) {
     if (_gyroscopeEvents != null) {
       _gyroscopeEvents?.cancel();
       stopwatch.reset();
@@ -19,25 +19,20 @@ class GyroscopeObserver {
     }
     stopwatch.start();
 
-    try {
-      _gyroscopeEvents = gyroscopeEvents.listen((GyroscopeEvent event) {
-        final interval = stopwatch.elapsedMilliseconds / 1000 - _lastTime;
-        x += event.x * interval;
-        y += event.y * interval;
-        z += event.z * interval;
-        onChange();
-        _lastTime = stopwatch.elapsedMilliseconds / 1000;
-      }, onError: (obj, trace) {
-        print("Error");
-        print(trace);
-      });
-      print(_gyroscopeEvents);
-      print(gyroscopeEvents);
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    _gyroscopeEvents = gyroscopeEvents.listen((GyroscopeEvent event) {
+      final interval = stopwatch.elapsedMilliseconds / 1000 - _lastTime;
+      x += event.x * interval;
+      y += event.y * interval;
+      z += event.z * interval;
+      onChange();
+      _lastTime = stopwatch.elapsedMilliseconds / 1000;
+    });
+  }
+
+  void resetPosition() {
+    x = 0.0;
+    y = 0.0;
+    z = 0.0;
   }
 
   void dispose() {
