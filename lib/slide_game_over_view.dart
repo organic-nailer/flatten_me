@@ -59,8 +59,12 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
                   padding: const EdgeInsets.all(8.0),
                   child: IconButton(
                       onPressed: () {
-                        openUrl(
-                            "https://twitter.com/intent/tweet?text=Steps%3A%20${widget.steps}}%0ATime%3A%20${widget.timeSec.toStringAsFixed(1)}s%0A%0AFlatten%20me!${widget.isBlind ? "(Blind)" : ""}%20%7C%20https%3A%2F%2Fflatten-me.fastriver.dev%2F%23%2F");
+                        openUrl("https://twitter.com/intent/tweet?text="
+                            "--%20${widget.isBlind ? "Blind" : "Normal"}%20Mode%20--%0A"
+                            "Steps%3A%20${widget.steps}%0A"
+                            "Time%3A%20${widget.timeSec.toStringAsFixed(1)}s%0A%0A"
+                            "Flatten%20me!%20%40%20%23FlutterPuzzleHack%20%7C%20"
+                            "https%3A%2F%2Fflatten-me.fastriver.dev%2F%23%2F");
                       },
                       icon: const Icon(
                         Icons.share,

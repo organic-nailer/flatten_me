@@ -172,11 +172,6 @@ class _SlideGamePageState extends State<SlideGamePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      onGameOver();
-                    },
-                    child: const Text("gameover")),
                 Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SlideGameMenu(
