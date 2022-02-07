@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "CompanyName", "dev.fastriver" "\0"
+            VALUE "FileDescription", "15 puzzle to flatten" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "flatten me" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 fastriver_org. All rights reserved." "\0"
             VALUE "OriginalFilename", "flatten_me.exe" "\0"
             VALUE "ProductName", "flatten me" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

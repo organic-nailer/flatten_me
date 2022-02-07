@@ -3,9 +3,9 @@
     "short_name": "flatten me",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#4CAF50",
+    "theme_color": "#4CAF50",
+    "description": "15 puzzle to flatten your mind",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
