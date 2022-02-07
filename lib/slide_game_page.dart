@@ -149,7 +149,7 @@ class _SlideGamePageState extends State<SlideGamePage> {
       lowerCells = true;
     });
 
-    await Future.delayed(const Duration(milliseconds: 700));
+    await Future.delayed(const Duration(milliseconds: 1000));
 
     safeSetState(() {
       showGameOver = true;
@@ -209,9 +209,9 @@ class _SlideGamePageState extends State<SlideGamePage> {
                             surfaceColor: ColorTween(
                                 begin: widget.colorPreset.baseColor,
                                 end: widget.colorPreset.baseColor),
-                            value: lowerCells ? -0.9 : 0.0,
-                            duration: const Duration(milliseconds: 700),
-                            curve: Curves.easeInOutSine,
+                            value: lowerCells ? -0.8 : 0.0,
+                            duration: const Duration(milliseconds: 1000),
+                            curve: Curves.easeInOutBack,
                             maxSurfaceOffset: SurfaceOffset(width, width),
                             child: Padding(
                               padding: EdgeInsets.all(cellSize * 0.1),
