@@ -156,90 +156,92 @@ class _SlideGamePageState extends State<SlideGamePage> {
       emptyCellColumn: emptyCellColumn,
       child: Scaffold(
         backgroundColor: widget.colorPreset.baseColor,
-        body: Center(
-            child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 700),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    onGameOver();
-                  },
-                  child: const Text("gameover")),
-              Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SlideGameMenu(
-                      baseColor: widget.colorPreset.baseColor,
-                      steps: steps,
-                      reload: reload,
-                      stopwatch: stopwatch,
-                      isGyroscopeAvailable: isGyroscopeAvailable,
-                      isGyroscopeEnabled: isGyroscopeEnabled,
-                      onGyroscopeChanged: (isEnabled) {
-                        setState(() {
-                          isGyroscopeEnabled = isEnabled;
-                        });
-                      },
-                      onAngleChanged: (value) {
-                        setState(() {
-                          angle = value;
-                        });
-                      },
-                      angle: angle)),
-              Expanded(
-                child: Center(
-                  child: AspectRatio(
-                      aspectRatio: 1,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        final width = constraints.biggest.width;
-                        final cellSize = width / 4;
-                        return StrokeDepthButton(
-                          surfaceColor: ColorTween(
-                              begin: widget.colorPreset.baseColor,
-                              end: widget.colorPreset.baseColor),
-                          value: lowerCells ? -0.9 : 0.0,
-                          duration: const Duration(milliseconds: 700),
-                          curve: Curves.easeInOutSine,
-                          maxSurfaceOffset: SurfaceOffset(width, width),
-                          child: Padding(
-                            padding: EdgeInsets.all(cellSize * 0.1),
-                            child: Stack(
-                              children: [
-                                Positioned.fill(
-                                    child: SlideGameTable(
-                                        isBlindMode: widget.isBlindMode,
-                                        surfaceColor:
-                                            widget.colorPreset.getTween(),
-                                        angle: angle,
-                                        gyroDx: gyroDx,
-                                        gyroDy: gyroDy,
-                                        isGyroEnabled: isGyroscopeEnabled,
-                                        onClickCell: onClickTile,
-                                        slideCells: slideCells)),
-                                Positioned.fill(
-                                  child: Visibility(
-                                      visible: showGameOver,
-                                      child: SlideGameOverView(
-                                          baseColor:
-                                              widget.colorPreset.baseColor,
-                                          timeSec:
-                                              stopwatch.elapsed.inMilliseconds /
-                                                  1000.0,
-                                          steps: steps,
-                                          isBlind: widget.isBlindMode,
-                                          reload: reload)),
-                                )
-                              ],
+        body: SafeArea(
+          child: Center(
+              child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      onGameOver();
+                    },
+                    child: const Text("gameover")),
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SlideGameMenu(
+                        baseColor: widget.colorPreset.baseColor,
+                        steps: steps,
+                        reload: reload,
+                        stopwatch: stopwatch,
+                        isGyroscopeAvailable: isGyroscopeAvailable,
+                        isGyroscopeEnabled: isGyroscopeEnabled,
+                        onGyroscopeChanged: (isEnabled) {
+                          setState(() {
+                            isGyroscopeEnabled = isEnabled;
+                          });
+                        },
+                        onAngleChanged: (value) {
+                          setState(() {
+                            angle = value;
+                          });
+                        },
+                        angle: angle)),
+                Expanded(
+                  child: Center(
+                    child: AspectRatio(
+                        aspectRatio: 1,
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          final width = constraints.biggest.width;
+                          final cellSize = width / 4;
+                          return StrokeDepthButton(
+                            surfaceColor: ColorTween(
+                                begin: widget.colorPreset.baseColor,
+                                end: widget.colorPreset.baseColor),
+                            value: lowerCells ? -0.9 : 0.0,
+                            duration: const Duration(milliseconds: 700),
+                            curve: Curves.easeInOutSine,
+                            maxSurfaceOffset: SurfaceOffset(width, width),
+                            child: Padding(
+                              padding: EdgeInsets.all(cellSize * 0.1),
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                      child: SlideGameTable(
+                                          isBlindMode: widget.isBlindMode,
+                                          surfaceColor:
+                                              widget.colorPreset.getTween(),
+                                          angle: angle,
+                                          gyroDx: gyroDx,
+                                          gyroDy: gyroDy,
+                                          isGyroEnabled: isGyroscopeEnabled,
+                                          onClickCell: onClickTile,
+                                          slideCells: slideCells)),
+                                  Positioned.fill(
+                                    child: Visibility(
+                                        visible: showGameOver,
+                                        child: SlideGameOverView(
+                                            baseColor:
+                                                widget.colorPreset.baseColor,
+                                            timeSec: stopwatch
+                                                    .elapsed.inMilliseconds /
+                                                1000.0,
+                                            steps: steps,
+                                            isBlind: widget.isBlindMode,
+                                            reload: reload)),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      })),
+                          );
+                        })),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )),
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }
