@@ -1,4 +1,5 @@
 import 'package:flatten_me/start_page.dart';
+import 'package:flatten_me/util.dart';
 import 'package:flutter/material.dart';
 
 class SlideGameOverView extends StatefulWidget {
@@ -57,7 +58,10 @@ class _SlideGameOverViewState extends State<SlideGameOverView> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        openUrl(
+                            "https://twitter.com/intent/tweet?text=Steps%3A%20${widget.steps}}%0ATime%3A%20${widget.timeSec.toStringAsFixed(1)}s%0A%0AFlatten%20me!${widget.isBlind ? "(Blind)" : ""}%20%7C%20https%3A%2F%2Fflatten-me.fastriver.dev%2F%23%2F");
+                      },
                       icon: const Icon(
                         Icons.share,
                         size: 40,

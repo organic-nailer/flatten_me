@@ -1,3 +1,4 @@
+import 'package:flatten_me/util.dart';
 import 'package:flutter/material.dart';
 
 class StartCopyrightView extends StatelessWidget {
@@ -12,7 +13,9 @@ class StartCopyrightView extends StatelessWidget {
       children: [
         const Text("© 2022"),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              openUrl("https://twitter.com/Fastriver_org");
+            },
             style: const ButtonStyle(splashFactory: NoSplash.splashFactory),
             child: const Text(
               "fastriver_org",
