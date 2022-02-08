@@ -42,11 +42,12 @@ class _StartPageState extends State<StartPage> {
                 SlideGamePage(colorPreset: colorPresets[selectedColorIndex]));
             break;
           case 2:
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (_) => SlideGamePage(
-                      colorPreset: colorPresets[selectedColorIndex],
-                      isBlindMode: true,
-                    )));
+            navigateWithStrokeTransition(
+                context,
+                SlideGamePage(
+                  colorPreset: colorPresets[selectedColorIndex],
+                  isBlindMode: true,
+                ));
             break;
         }
         setState(() {
