@@ -32,42 +32,53 @@ void showHowToPlay(BuildContext context, Color baseColor) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "\"Flatten me!\" is a kind of \"15 puzzle\". " +
-                              "The goal of this puzzle is not only to place cells in numerical order " +
-                              "but also to flatten height of cells.",
+                          "\"Flatten me!\" is a kind of \"15 puzzle\". "
+                          "The goal of this puzzle is not only to place cells in numerical order "
+                          "but also to flatten height of cells.",
                           style: bodyTextStyle,
                         ),
                         const Text(
-                          "As shown in the figure below, " +
-                              "the height of cells in the correct position is 0, " +
-                              "but cells on the upper left than the correct position are being protruded. " +
-                              "Also  on the bottom right ones are being dented.",
+                          "As shown in the figure below, "
+                          "the height of cells in the correct position is 0, "
+                          "but cells on the upper left than the correct position are being protruded. "
+                          "Also  on the bottom right ones are being dented.",
                           style: bodyTextStyle,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(30),
-                            child: Image.asset(
-                              "assets/howto1.png",
-                              height: 200,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxHeight: 200),
+                              child: Image.asset(
+                                "assets/howto1.png",
+                              ),
                             ),
                           ),
                         ),
                         const Text(
-                          "By pressing the cell adjacent to a blank cell, " +
-                              "the cell can be moved to the position of the blank cell.",
+                          "By pressing the cell adjacent to a blank cell, "
+                          "the cell can be moved to the position of the blank cell.",
                           style: bodyTextStyle,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(30),
-                            child: Image.asset(
-                              "assets/howto2.png",
-                              height: 200,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxHeight: 200),
+                              child: Image.asset(
+                                "assets/howto2.png",
+                                height: 200,
+                              ),
                             ),
                           ),
+                        ),
+                        const Text(
+                          "On the start screen, you can select the mode and how to play, "
+                          "and you can change the theme color at the bottom. "
+                          "Click / tap the theme you want to apply and the theme will be applied to the whole.",
+                          style: bodyTextStyle,
                         ),
                         const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -77,8 +88,8 @@ void showHowToPlay(BuildContext context, Color baseColor) {
                           ),
                         ),
                         const Text(
-                          "In this mode, the numbers are hidden, " +
-                              "so you need to play with only the height information.",
+                          "In this mode, the numbers are hidden, "
+                          "so you need to play with only the height information.",
                           style: bodyTextStyle,
                         ),
                         const Padding(
@@ -89,9 +100,9 @@ void showHowToPlay(BuildContext context, Color baseColor) {
                           ),
                         ),
                         const Text(
-                          "You can change the sight angle with the circular slider on the top left. " +
-                              "If you are using a smartphone, " +
-                              "you can enable the gyro sensor from the icon on the top right.",
+                          "You can change the sight angle with the circular slider on the top left. "
+                          "If you are using a smartphone, "
+                          "you can enable the gyro sensor from the icon on the top right.",
                           style: bodyTextStyle,
                         ),
                         Padding(
